@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar"
 
 const NavBar = () => {
-  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
-
+  // const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const isAuthenticated = true
+  const loginWithRedirect = () => true
   const loggedIn = isAuthenticated && (
         <span>
           <Link to="/">Home</Link>&nbsp;
@@ -16,7 +17,7 @@ const NavBar = () => {
         <button onClick={() => loginWithRedirect({})}>Log in</button>
       )
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar className="mb-3" bg="dark" variant="dark">
       <Navbar.Brand href="#home">Names That Maybe Code</Navbar.Brand>
       <Navbar.Toggle />
       <Navbar.Collapse className="justify-content-end">

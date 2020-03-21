@@ -6,6 +6,8 @@ import { Router, Route, Switch } from "react-router-dom";
 import Profile from "./Profile";
 import history from "../utils/history";
 import PrivateRoute from "./PrivateRoute";
+import Home from "./Home"
+import Game from "./Game";
 
 function App() {
   return (
@@ -16,8 +18,9 @@ function App() {
           <NavBar />
         </header>
         <Switch>
-          <Route path="/" exact />
-          <PrivateRoute path="/profile" component={Profile} />
+          <Route path="/" exact component={Home} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/game" component={Game} />
         </Switch>
       </Router>
     </div>
