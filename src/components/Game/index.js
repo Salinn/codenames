@@ -1,171 +1,35 @@
 import React from "react"
 import Card from "react-bootstrap/Card"
+import { wordsToCards, pickStartingTeam } from "../../utils/Game";
 
 const Game = props => {
   const {
-    words = [
-      {
-        id: 1,
-        label: "Dog",
-        flipped: false,
-        team: "red"
-      },
-      {
-        id: 2,
-        label: "Pillow",
-        flipped: false,
-        team: "red"
-      },
-      {
-        id: 3,
-        label: "Baby",
-        flipped: false,
-        team: "blue"
-      },
-      {
-        id: 4,
-        label: "Pole",
-        flipped: false,
-        team: "none"
-      },
-      {
-        id: 5,
-        label: "Chess",
-        flipped: false,
-        team: "none"
-      },
-      {
-        id: 6,
-        label: "Airport",
-        flipped: false,
-        team: "none"
-      },
-      {
-        id: 7,
-        label: "Cheese",
-        flipped: false,
-        team: "red"
-      },
-      {
-        id: 8,
-        label: "Boston",
-        flipped: false,
-        team: "red"
-      },
-      {
-        id: 9,
-        label: "Monopoly",
-        flipped: false,
-        team: "red"
-      },
-      {
-        id: 10,
-        label: "White Collar",
-        flipped: false,
-        team: "blue"
-      },
-      {
-        id: 11,
-        label: "Laptop",
-        flipped: false,
-        team: "blue"
-      },
-      {
-        id: 12,
-        label: "Picture",
-        flipped: false,
-        team: "red"
-      },
-      {
-        id: 13,
-        label: "Nut",
-        flipped: false,
-        team: "blue"
-      },
-      {
-        id: 14,
-        label: "Tree",
-        flipped: false,
-        team: "red"
-      },
-      {
-        id: 15,
-        label: "Elephant",
-        flipped: false,
-        team: "none"
-      },
-      {
-        id: 16,
-        label: "Beer",
-        flipped: false,
-        team: "blue"
-      },
-      {
-        id: 17,
-        label: "Lighting",
-        flipped: false,
-        team: "blue"
-      },
-      {
-        id: 18,
-        label: "Rain",
-        flipped: false,
-        team: "none"
-      },
-      {
-        id: 19,
-        label: "Stage",
-        flipped: false,
-        team: "red"
-      },
-      {
-        id: 20,
-        label: "Wine",
-        flipped: false,
-        team: "red"
-      },
-      {
-        id: 21,
-        label: "Remote",
-        flipped: false,
-        team: "blue"
-      },
-      {
-        id: 22,
-        label: "Sea",
-        flipped: false,
-        team: "blue"
-      },
-      {
-        id: 23,
-        label: "Socks",
-        flipped: false,
-        team: "assassin"
-      },
-      {
-        id: 24,
-        label: "Bench",
-        flipped: false,
-        team: "none"
-      },
-      {
-        id: 25,
-        label: "Milk",
-        flipped: false,
-        team: "none"
-      }
-    ]
+    words = ["Dog", "Baby", "Pole", "Chess", "Airport", "Cheese", "Boston", "Monopoly", "Bear", "White Collar", "Laptop", "Picture", "Nut", "Tree", "Elephant", "Beer", "Lighting", "Rain", "Stage", "Wine", "Remote", "Sea", "Socks", "Bench", "Milk" ]
   } = props;
-  const [cards, setState] = React.useState(words)
+  const startingTeam = pickStartingTeam()
+  const initialState = wordsToCards({ words, startingTeam });
+  const [cards, setCards] = React.useState(initialState);
+
+  const redStarts = startingTeam === "red";
+  const blueStarts = startingTeam === "blue";
+  const startingTotals = {
+    assassin: 1,
+    red: redStarts ? 9 : 8,
+    blue: blueStarts ? 9 : 8,
+    none: 7
+  };
+  const [totals, setTotals] = React.useState(startingTotals)
+
   const flipCard = card => {
     const nextState = cards.map(currentCard => {
       const SAME_CARD = card.label === currentCard.label
       if(SAME_CARD) {
+        setTotals({ ...totals, [currentCard.team]: totals[currentCard.team] - 1 });
         return { ...currentCard, flipped: true }
       }
       return currentCard
     })
-    setState(nextState)
+    setCards(nextState)
   }
 
   const determineBackgroundColor = card => {
@@ -219,12 +83,16 @@ const Game = props => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-12 text-center">
-          <h1>Game</h1>
-          <h2>Clue word: Animal</h2>
-          <h2>Remaining Guesses: 1</h2>
+        <div className="col-10">
+          <div className="row">{gameCards}</div>
         </div>
-        {gameCards}
+        <div className="col-2 p-2">
+          <h5>Remaining Cards</h5>
+          <p className="text-primary">Blue: {totals.blue}</p>
+          <p className="text-danger">Red: {totals.red}</p>
+          <p className="text-dark">Assassin: {totals.assassin}</p>
+          <p className="text-muted">Neither: {totals.none}</p>
+        </div>
       </div>
     </div>
   );
