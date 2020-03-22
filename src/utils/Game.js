@@ -10,9 +10,7 @@ export const wordsToCards = props => {
   };
 
   const cards = words.map((word, index) => {
-    console.log("word", word)
     const response = pickTeam({totals})
-    console.log("response", response)
     const { team, newTotals } = response
     totals = newTotals
 
@@ -31,7 +29,6 @@ export const wordsToCards = props => {
 const pickTeam = props => {
   const { totals } = props
 
-  console.log("totals", totals)
   const totalValidCategories = Object.keys(totals).length || 0
   const randomInt = getRandomInt(totalValidCategories)
 

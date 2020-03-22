@@ -8,7 +8,7 @@ const allTheWords = [
 "Pitch","King","Crane","Trip","Dog","Conductor","Part","Bugle","Witch","Ketchup","Press","Spine","Worm","Alps",
 "Bond","Pan","Beijing","Racket","Cross","Seal","Aztec","Maple","Parachute","Hotel","Berry","Soldier","Ray","Post",
 "Greece","Square","Mass","Bat","Wave","Car","Smuggler","England","Crash","Tail","Card","Horn","Capital","Fence",
-"Deck","Buffalo","Microscope","Jet","Duck,Ring","Train","Field","Gold","Tick","Check","Queen","Strike","Kangaroo",
+"Deck","Buffalo","Microscope","Jet","Duck","Ring","Train","Field","Gold","Tick","Check","Queen","Strike","Kangaroo",
 "Spike","Scientist","Engine","Shakespeare","Wind","Kid","Embassy","Robot","Note","Ground","Draft","Ham","War","Mouse",
 "Center","Chick","China","Bolt","Spot","Piano","Pupil","Plot","Lion","Police","Head","Litter","Concert","Mug",
 "Vacuum","Atlantis","Straw","Switch","Skyscraper","Laser","Scuba Diver","Africa","Plastic","Dwarf","Lap","Life","Honey","Horseshoe",

@@ -2,10 +2,12 @@ import React from "react"
 import Card from "react-bootstrap/Card"
 import { wordsToCards, pickStartingTeam } from "../../utils/Game";
 import { pickWords } from "../../assets/words"
+
+const words = pickWords();
+const startingTeam = pickStartingTeam();
+const initialState = wordsToCards({ words, startingTeam });
+
 const Game = props => {
-  const words = pickWords()
-  const startingTeam = pickStartingTeam()
-  const initialState = wordsToCards({ words, startingTeam });
   const [cards, setCards] = React.useState(initialState);
   const [spyToggled, setSpyToggled] = React.useState(false)
   const toggleSpy = () => setSpyToggled(!spyToggled)
@@ -18,6 +20,19 @@ const Game = props => {
     blue: blueStarts ? 9 : 8,
     none: 7
   };
+  const [gameStillPlaying, setGameStillPlaying] = React.useState(true)
+  const [turnTeam, setTurnTeam] = React.useState(startingTeam);
+  const redsTurn = turnTeam === "red"
+  const bluesTurn = turnTeam === "blue"
+  const updateTeam = props => {
+    const { card } = props
+    if (card.team === turnTeam || card.team === "assassin") {
+      setTurnTeam(turnTeam);
+    } else {
+      const newTeam = turnTeam === "red" ? "blue" : "red";
+      setTurnTeam(newTeam);
+    }
+  }
   const [totals, setTotals] = React.useState(startingTotals)
   const newGame = () => {
     const words = pickWords();
@@ -26,12 +41,16 @@ const Game = props => {
     setCards(initialState);
     setSpyToggled(false)
     setTotals(startingTotals);
+    setTurnTeam(startingTeam)
+    setGameStillPlaying(true)
   }
 
   const flipCard = card => {
+    let cardFlipped
     const nextState = cards.map(currentCard => {
       const SAME_CARD = card.label === currentCard.label
       if(SAME_CARD) {
+        updateTeam({ card: currentCard });
         setTotals({ ...totals, [currentCard.team]: totals[currentCard.team] - 1 });
         return { ...currentCard, flipped: true }
       }
@@ -73,10 +92,10 @@ const Game = props => {
     const opacity = FLIPPED_AND_SPY_MASTER ? {opacity: 0.5} : {}
     const className =
       index % 5 === 0
-        ? "col-12 col-sm-6 col-md-4 col-lg-2 offset-lg-1"
-        : "col-12 col-sm-6 col-md-4 col-lg-2";
+        ? "col-6 col-md-4 col-lg-2 offset-lg-1"
+        : "col-6 col-md-4 col-lg-2";
     const onClick = () => {
-      const NOT_FLIPPED = !flipped && !spyToggled;
+      const NOT_FLIPPED = !flipped && !spyToggled && gameStillPlaying;
       if(NOT_FLIPPED) {
         flipCard(word);
       }
@@ -104,24 +123,34 @@ const Game = props => {
   let winningMessage, turnMessaging;
   const blueWon = totals.blue === 0; 
   const redWon = totals.red === 0 
-  const gameOver = blueWon || redWon
-  if(gameOver) {
-    winningMessage = redWon
-    ? "CONGRATS RED TEAM!"
-    : "WAY TO GO BLUE TEAM!";
-  } else {
-    turnMessaging =  blueWon ? "Blue's turn" : "Red's turn";
+  const gameWon = blueWon || redWon;
+  const assassinFound = totals.assassin === 0
+  const anotherTurn = !gameWon && !assassinFound
+  if (gameWon) {
+    winningMessage = redWon ? "CONGRATS RED TEAM!" : "WAY TO GO BLUE TEAM!";
+    if (gameStillPlaying) {
+      setGameStillPlaying(false);
+    }
+  } else if (assassinFound) {
+    winningMessage = bluesTurn
+      ? "RED TEAM IS VICTORIOUS!"
+      : "BLUE TEAM IS OUR VICTOR!";
+    if (gameStillPlaying) { 
+      setGameStillPlaying(false);
+    }
+  } else if (anotherTurn && gameStillPlaying) {
+    turnMessaging = redsTurn ? "Red's turn" : "Blue's turn";
   }
   const spyToggleLabel = spyToggled ? "See Guesser View" : "See Spymaster View";
 
   return (
     <div className="container-fluid">
+      <h2 className="text-center">
+        {turnMessaging}
+        {winningMessage}
+      </h2>
       <div className="row pb-5">
         <div className="order-2 order-md-1 col-12 col-md-10 ">
-          <h2>
-            {turnMessaging}
-            {winningMessage}
-          </h2>
           <div className="row">{gameCards}</div>
         </div>
         <div className="order-1 order-m-2d col-12 col-md-2 p-2">
