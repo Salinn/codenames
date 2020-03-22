@@ -2,7 +2,7 @@ const allTheWords = [
   "Hollywood","Well","Foot","New York","Spring","Court","Tube","Point","Tablet","Slip","Date","Drill","Lemon","Bell",
 "Screen","Fair","Torch","State","Match","Iron","Block","France","Australia","Limousine","Stream","Glove","Nurse","Leprechaun",
 "Play","Tooth","Arm","Bermuda","Diamond","Whale","Comic","Mammoth","Green","Pass","Missile","Paste", "Drop", "Phoenix",
-"Marble","Staff","Figure,Park","Centaur", "Shadow","Fish", "Cotton","Egypt","Theater","Scale","Fall","Track","Force",
+"Marble","Staff","Figure","Park","Centaur", "Shadow","Fish", "Cotton","Egypt","Theater","Scale","Fall","Track","Force",
 "Dinosaur","Bill","Mine","Turkey","March","Contract","Bridge","Robin","Line","Plate","Band","Fire","Bank","Boom",
 "Cat","Shot","Suit","Chocolate","Roulette","Mercury","Moon","Net","Lawyer","Satellite","Angel","Spider","Germany","Fork",
 "Pitch","King","Crane","Trip","Dog","Conductor","Part","Bugle","Witch","Ketchup","Press","Spine","Worm","Alps",
