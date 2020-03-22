@@ -1,11 +1,9 @@
 import React from "react"
 import Card from "react-bootstrap/Card"
 import { wordsToCards, pickStartingTeam } from "../../utils/Game";
-
+import { pickWords } from "../../assets/words"
 const Game = props => {
-  const {
-    words = ["Dog", "Baby", "Pole", "Chess", "Airport", "Cheese", "Boston", "Monopoly", "Bear", "White Collar", "Laptop", "Picture", "Nut", "Tree", "Elephant", "Beer", "Lighting", "Rain", "Stage", "Wine", "Remote", "Sea", "Socks", "Bench", "Milk" ]
-  } = props;
+  const words = pickWords()
   const startingTeam = pickStartingTeam()
   const initialState = wordsToCards({ words, startingTeam });
   const [cards, setCards] = React.useState(initialState);
