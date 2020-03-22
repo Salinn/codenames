@@ -1,4 +1,7 @@
 import React from "react";
+import Firebase from "firebase/app";
+import config from "../config";
+
 import NavBar from "./NavBar";
 
 // New - import the React Router components, and the Profile page component
@@ -10,6 +13,7 @@ import Home from "./Home"
 import Game from "./Game";
 
 function App() {
+  Firebase.initializeApp(config.firebase);
   return (
     <div className="App">
       {/* Don't forget to include the history module */}
@@ -20,7 +24,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/profile" component={Profile} />
-          <Route path="/game" component={Game} />
+          <Route path="/codenames" component={Game} />
         </Switch>
       </Router>
     </div>

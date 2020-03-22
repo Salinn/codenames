@@ -26,6 +26,8 @@ export const wordsToCards = props => {
   return shuffledCards
 }
 
+/// I need to track the clue and number for each team
+
 const pickTeam = props => {
   const { totals } = props
 
