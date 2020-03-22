@@ -7,6 +7,8 @@ const Game = props => {
   const startingTeam = pickStartingTeam()
   const initialState = wordsToCards({ words, startingTeam });
   const [cards, setCards] = React.useState(initialState);
+  const [spyToggled, setSpyToggled] = React.useState(false)
+  const toggleSpy = () => setSpyToggled(!spyToggled)
 
   const redStarts = startingTeam === "red";
   const blueStarts = startingTeam === "blue";
@@ -30,9 +32,9 @@ const Game = props => {
     setCards(nextState)
   }
 
-  const determineBackgroundColor = card => {
+  const determineBackgroundColor = (card, spyToggled) => {
     const { flipped, team } = card
-    const NOT_FLIPPED = !flipped
+    const NOT_FLIPPED = !flipped && !spyToggled;
     if (NOT_FLIPPED) {
       return "bg-light";
     }
@@ -49,8 +51,8 @@ const Game = props => {
           return "bg-light";
       }
   }
-  const determineTextColor = card => {
-    const IS_FLIPPED = card.flipped
+  const determineTextColor = (card, spyToggled) => {
+    const IS_FLIPPED = card.flipped || spyToggled;
     if(IS_FLIPPED) {
       return "text-light"
     }
@@ -61,9 +63,9 @@ const Game = props => {
     const { id, label, flipped } = word;
     const className = index % 5 === 0 ? "col-2 offset-1" : "col-2 ";
     const onClick = () => flipCard(word);
-    const backgroundColor = determineBackgroundColor(word);
-    const textColor = determineTextColor(word)
-    const button = !flipped && (
+    const backgroundColor = determineBackgroundColor(word, spyToggled);
+    const textColor = determineTextColor(word, spyToggled);
+    const button = (!flipped && !spyToggled) && (
       <button onClick={onClick} className="btn btn-secondary mx-2">
         Select
       </button>
@@ -90,6 +92,9 @@ const Game = props => {
           <p className="text-danger">Red: {totals.red}</p>
           <p className="text-dark">Assassin: {totals.assassin}</p>
           <p className="text-muted">Neither: {totals.none}</p>
+          <button onClick={toggleSpy} className="btn btn-primary">
+            Toggle Spy Master
+          </button>
         </div>
       </div>
     </div>
