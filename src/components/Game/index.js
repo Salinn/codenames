@@ -1,11 +1,11 @@
 import React from "react"
-import Card from "react-bootstrap/Card"
+import Codenames from "./Codenames"
 import { CodenamesProvider } from "../../context/Codenames"
 
 const Game = props => {
   return (
     <CodenamesProvider>
-      <Game />
+      <Codenames />
     </CodenamesProvider>
   );
 }

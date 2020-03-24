@@ -8,7 +8,7 @@ import NavBar from "./NavBar";
 import { Router, Route, Switch } from "react-router-dom";
 import Profile from "./Profile";
 import history from "../utils/history";
-import PrivateRoute from "./PrivateRoute";
+// import PrivateRoute from "./PrivateRoute";
 import Home from "./Home"
 import Game from "./Game";
 

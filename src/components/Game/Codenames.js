@@ -1,10 +1,12 @@
 import React from "react"
-import { getGameState, types } from "../../context/Codenames"
+import Card from "react-bootstrap/Card"
+
+import { useGameState, types } from "../../context/Codenames"
 
 const CodeNames = props => {
 const { location } = props
-  const gameName = new URLSearchParams(location.query).get("name");
-  const [state, setState] = useCreateGame({ gameName });
+  const gameName = new URLSearchParams(window.location.query).get("name");
+  const [state, dispatch] = useGameState({ gameName });
 
   const {
     cards,
@@ -16,40 +18,35 @@ const { location } = props
   const redsTurn = turnTeam === "red";
   const bluesTurn = turnTeam === "blue";
   
-  const toggleSpy = () => setState({ ...state, spyToggled: !spyToggled })
+  const toggleSpy = () => dispatch({ type: types.TOGGLE_SPY })
   const updateTeam = props => {
     const { card } = props
     if (card.team === turnTeam || card.team === "assassin") {
-    console.log("maintained turn", card.team, turnTeam);
-      setState({ ...state, turnTeam });
+      dispatch({ type: types.UPDATE_GAME_TURN, turnTeam });
     } else {
-    console.log("lost turn", card.team, turnTeam);
       const newTeam = turnTeam === "red" ? "blue" : "red";
-      setState({ ...state, turnTeam: newTeam });
+      dispatch({ type: types.UPDATE_GAME_TURN, turnTeam: newTeam });
     }
   }
   const newGame = () => {
-    
+    dispatch({ type: types.START_NEW_GAME });
   }
 
   const flipCard = card => {
-    let cardFlipped
-    const nextState = cards.map(currentCard => {
+    const nextCards = cards.map(currentCard => {
       const SAME_CARD = card.label === currentCard.label
       if(SAME_CARD) {
         updateTeam({ card: currentCard });
-        setState({ 
-          ...state, 
-          totals: {
-            ...totals, 
-            [currentCard.team]: totals[currentCard.team] - 1 
-          }
+        dispatch({
+          type: types.REMOVE_FROM_TOTAL,
+          totals,
+          currentCard
         });
         return { ...currentCard, flipped: true }
       }
       return currentCard
     })
-    setState({ ...state, cards: nextState })
+    dispatch({ type: types.NEW_CARDS, nextCards });
   }
 
   const determineBackgroundColor = (card, spyToggled) => {
@@ -122,24 +119,26 @@ const { location } = props
   if (gameWon) {
     winningMessage = redWon ? "CONGRATS RED TEAM!" : "WAY TO GO BLUE TEAM!";
     if (gameStillPlaying) {
-      setState({ ...state, gameStillPlaying: false });
+      dispatch({ type: types.GAME_OVER });
     }
   } else if (assassinFound) {
     winningMessage = bluesTurn
       ? "RED TEAM IS VICTORIOUS!"
       : "BLUE TEAM IS OUR VICTOR!";
     if (gameStillPlaying) { 
-      setState({ ...state, gameStillPlaying: false });
+      dispatch({ type: types.GAME_OVER });
     }
   } else if (anotherTurn && gameStillPlaying) {
     turnMessaging = redsTurn ? "Red's turn" : "Blue's turn";
   }
   const spyToggleLabel = spyToggled ? "See Guesser View" : "See Spymaster View";
+  const formInputChanged = event => {
+    event.preventDefault()
+    const { name, value } = event.target
+    dispatch({ type: types.FORM_VALUE_UPDATED, name, value})
+  }
 
   return (
-    <CodenamesProvider>
-                <Game />
-              </CodenamesProvider>
     <div className="container-fluid">
       <h2 className="text-center">
         {turnMessaging}
@@ -159,11 +158,41 @@ const { location } = props
             <button onClick={toggleSpy} className="btn btn-primary mb-3">
               {spyToggleLabel}
             </button>
-            <p>To make a guess just click the card!</p>
+            <div>
+              <p>To make a guess just click the card!</p>
+            </div>
             {spyMasterMessage}
             <button onClick={newGame} className="btn btn-success mb-3">
               New Game
             </button>
+            <form>
+              <p>Submit New Clue</p>
+              <label>
+                Word:
+                <input
+                  name="word"
+                  value={state.clues.word}
+                  onChange={formInputChanged}
+                />
+              </label>
+              <label>
+                Number:
+                <input
+                  name="number"
+                  value={state.clues.number}
+                  onChange={formInputChanged}
+                />
+              </label>
+              <button
+                onClick={(event) =>  {
+                  event.preventDefault()
+                  dispatch({ type: types.CLUE_SUBMITTED })}
+                }
+                className="btn btn-primary"
+              >
+                Submit Clue
+              </button>
+            </form>
           </div>
         </div>
       </div>
