@@ -1,5 +1,4 @@
 import React, { createContext, useReducer, useContext } from "react";
-
 import { wordsToCards, pickStartingTeam } from "../utils/Game";
 import { pickWords } from "../assets/words";
 
@@ -77,12 +76,17 @@ const reducer = (state, action) => {
   }
 }
 
+const updateStoredState = state => {
+}
+
 const CodenamesContext = createContext();
 const initialState = createGame()
 
 const CodenamesProvider = props => {
   const { children } = props
   const [state, dispatch] = useReducer(reducer, initialState) 
+  updateStoredState(state)
+  
   return (
     <CodenamesContext.Provider value={[state, dispatch]}>
       {children}

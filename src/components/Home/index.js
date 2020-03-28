@@ -24,7 +24,7 @@ const Home = props => {
   }
 
   const createGame = () => {
-    history.push(`/game?id=${gameName}`);
+    history.push(`/codenames?id=${gameName}`);
   }
 
   const currentGames = games.map(currentGame => {

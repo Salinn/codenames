@@ -1,6 +1,4 @@
 import React from "react";
-import Firebase from "firebase/app";
-import config from "../config";
 
 import NavBar from "./NavBar";
 
@@ -13,7 +11,6 @@ import Home from "./Home"
 import Game from "./Game";
 
 function App() {
-  Firebase.initializeApp(config.firebase);
   return (
     <div className="App">
       {/* Don't forget to include the history module */}

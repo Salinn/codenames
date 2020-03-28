@@ -4,8 +4,7 @@ import Card from "react-bootstrap/Card"
 import { useGameState, types } from "../../context/Codenames"
 
 const CodeNames = props => {
-const { location } = props
-  const gameName = new URLSearchParams(window.location.query).get("name");
+  const gameName = new URLSearchParams(window.location.search).get("name");
   const [state, dispatch] = useGameState({ gameName });
 
   const {
