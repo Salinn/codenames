@@ -1,5 +1,0 @@
-{
-    "tableName": "codenames",
-    "partitionKeyName": "name",
-    "partitionKeyType": "S"
-}

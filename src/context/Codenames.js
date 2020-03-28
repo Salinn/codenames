@@ -76,7 +76,8 @@ const reducer = (state, action) => {
   }
 }
 
-const updateStoredState = state => {
+const updateStoredState = async state => {
+  
 }
 
 const CodenamesContext = createContext();

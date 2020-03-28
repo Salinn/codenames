@@ -10,6 +10,7 @@ import history from "../utils/history";
 import Home from "./Home"
 import Game from "./Game";
 
+
 function App() {
   return (
     <div className="App">
