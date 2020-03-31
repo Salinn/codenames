@@ -22,6 +22,8 @@ const createGame = () => {
     turnTeam: startingTeam,
     totals: startingTotals,
     clues: {
+      showModal: false,
+      guesses: 0,
       word: "",
       number: "",
       redTeamPreviousClues: [],
@@ -36,7 +38,14 @@ const reducer = (state, action) => {
     case types.TOGGLE_SPY:
       return { ...state, spyToggled: !state.spyToggled };
     case types.UPDATE_GAME_TURN:
-      return { ...state, turnTeam: action.turnTeam };
+      return {
+        ...state,
+        turnTeam: action.turnTeam,
+        clues: {
+          ...state.clues,
+          guesses: action.guesses
+        }
+      };
     case types.NEW_CARDS:
       return { ...state, cards: action.nextCards };
     case types.GAME_OVER:
@@ -48,12 +57,14 @@ const reducer = (state, action) => {
       const { name, value } = action
       return { ...state, clues: { ...state.clues, [name]: value } }
     case types.CLUE_SUBMITTED:
-      const listToAddClueTo = state.turnTeam ? "redTeamPreviousClues" : "blueTeamPreviousClues"
+      const listToAddClueTo = state.turnTeam === "red" ? "redTeamPreviousClues" : "blueTeamPreviousClues"
       const { word, number } = state.clues
       return {
         ...state,
         clues: {
           ...state.clues,
+          showModal: false,
+          guesses: parseInt(number) + 1,
           word: "",
           number: "",
           [listToAddClueTo]: state.clues[listToAddClueTo].concat({
@@ -71,6 +82,25 @@ const reducer = (state, action) => {
           [currentCard.team]: totals[currentCard.team] - 1
         }
       };
+    case types.PASS_ON_TURN: 
+      const turnTeam = state.turnTeam === "red" ? "blue" : "red"
+      return {
+        ...state,
+        turnTeam,
+        clues: {
+          ...state.clues,
+          guesses: 0,
+        }
+      };
+    case types.ENTER_NEW_CLUE: {
+      return {
+        ...state,
+        clues: {
+          ...state.clues,
+          showModal: true
+        }
+      };
+    }
     default:
       return state;
   }
@@ -107,7 +137,9 @@ const types = {
   GAME_OVER: "GAME_OVER",
   START_NEW_GAME: "START_NEW_GAME",
   FORM_VALUE_UPDATED: "FORM_VALUE_UPDATED",
-  CLUE_SUBMITTED: "CLUE_SUBMITTED"
+  CLUE_SUBMITTED: "CLUE_SUBMITTED",
+  PASS_ON_TURN: "PASS_ON_TURN",
+  ENTER_NEW_CLUE: "ENTER_NEW_CLUE"
 };
 
 export { CodenamesProvider, useGameState, types };

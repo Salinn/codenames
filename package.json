@@ -19,7 +19,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "provision": "aws cloudformation deploy --template-file ./cloudformation_basic.yml --stack-name hosting-bucket",
+    "upload": "aws s3 sync build/ s3://tallpaul.dev --delete",
+    "deploy": "npm run build && npm run upload"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -21,8 +21,9 @@ function App() {
         </header>
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/games" exact component={Home} />
           <Route path="/profile" component={Profile} />
-          <Route path="/codenames" component={Game} />
+          <Route path="/games/codenames" component={Game} />
         </Switch>
       </Router>
     </div>
