@@ -81,9 +81,12 @@ export const pickStartingTeam = props => {
 }
 
 export const nameToSeed = ({ name="abc", number=1}) => {
-  const wordTotal = name.split('').reduce((sum, letter, index) => {
-    return sum + name.charCodeAt(index);
-  }, 0)
+  if(name) {
+    const wordTotal = name.split('').reduce((sum, letter, index) => {
+      return sum + name.charCodeAt(index);
+    }, 0)
 
-  return number + wordTotal
+    return number + wordTotal
+  }
+  return 1
 }
