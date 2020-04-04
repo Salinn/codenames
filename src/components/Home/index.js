@@ -46,7 +46,7 @@ const Home = props => {
             onChange={onChange}
             value={gameName}
           />
-          <button onClick={createGame}>Create New Game</button>
+          <button onClick={() => createGame}>Create New Game</button>
         </div>
 
         <div className="col-6">

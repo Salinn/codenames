@@ -1,5 +1,25 @@
+export const shuffle = (array, seed) => {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+    seed = seed || 1;
+    let random = function() {
+      var x = Math.sin(seed++) * 10000;
+      return x - Math.floor(x);
+    };
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(random() * currentIndex);
+      currentIndex -= 1;
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
+
 export const wordsToCards = props => {
-  const { words, startingTeam } = props
+  const { words, startingTeam, gameName, gameNumber } = props;
   const redStarts = startingTeam === "red"
   const blueStarts = startingTeam === "blue";
   let totals = {
@@ -22,17 +42,14 @@ export const wordsToCards = props => {
     }
   })
 
-  const shuffledCards = cards.sort((a, b) => 0.5 - Math.random());
-  return shuffledCards
+  return shuffle(cards, nameToSeed({ name: gameName, number: gameNumber }));
 }
 
 /// I need to track the clue and number for each team
 
 const pickTeam = props => {
   const { totals } = props
-
-  const totalValidCategories = Object.keys(totals).length || 0
-  const randomInt = getRandomInt(totalValidCategories)
+  const randomInt = 0
 
   return Object.keys(totals).reduce(
     (updatedInfo, key, index) => {
@@ -51,9 +68,11 @@ const pickTeam = props => {
   );
 }
 
-export const pickStartingTeam = () => {
-  const randomInt = getRandomInt(2)
-  const RED_TEAM_STARTS = randomInt===1
+export const pickStartingTeam = props => {
+  const { gameName, gameNumber } = props
+  const randomOrder = shuffle([1,2], nameToSeed({name: gameName, number: gameNumber}))
+
+  const RED_TEAM_STARTS = randomOrder[0] === 1;
 
   if(RED_TEAM_STARTS) {
     return "red"
@@ -61,6 +80,10 @@ export const pickStartingTeam = () => {
   return "blue"
 }
 
-const getRandomInt = max => {
-  return Math.floor(Math.random() * Math.floor(max));
+export const nameToSeed = ({ name="abc", number=1}) => {
+  const wordTotal = name.split('').reduce((sum, letter, index) => {
+    return sum + name.charCodeAt(index);
+  }, 0)
+
+  return number + wordTotal
 }

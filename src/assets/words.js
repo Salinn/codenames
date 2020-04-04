@@ -1,3 +1,5 @@
+import { shuffle, nameToSeed } from "../utils/Game";
+
 const allTheWords = [
   "Hollywood","Well","Foot","New York","Spring","Court","Tube","Point","Tablet","Slip","Date","Drill","Lemon","Bell",
 "Screen","Fair","Torch","State","Match","Iron","Block","France","Australia","Limousine","Stream","Glove","Nurse","Leprechaun",
@@ -31,6 +33,6 @@ const allTheWords = [
 "Death","Stock","Millionaire","Day","Knight","Pie","Bed","Circle","Rose","Change","Cap","Triangle",
 ]
 
-export const pickWords = () => {
-  return allTheWords.sort(() => Math.random() - Math.random()).slice(0, 25)
+export const pickWords = ({gameName, gameNumber}) => {
+  return shuffle(allTheWords, nameToSeed({ name: gameName, number: gameNumber })).slice(0, 25);
 }

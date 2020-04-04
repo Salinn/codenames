@@ -2,10 +2,27 @@ import React, { createContext, useReducer, useContext } from "react";
 import { wordsToCards, pickStartingTeam } from "../utils/Game";
 import { pickWords } from "../assets/words";
 
-const createGame = () => {
-  const words = pickWords();
-  const startingTeam = pickStartingTeam();
-  const startingCards = wordsToCards({ words, startingTeam });
+const createGame = props => {
+  let gameName = ""
+  let gameNumber = ""
+
+  if(props) {
+    gameName = props.gameName
+    gameNumber = props.gameNumber
+  } else {
+    const params = new URLSearchParams(window.location.search);
+    gameName = params.get("name");
+    gameNumber = parseInt(params.get("number"), 10);
+  }
+
+  const words = pickWords({ gameName, gameNumber });
+  const startingTeam = pickStartingTeam({ gameName, gameNumber });
+  const startingCards = wordsToCards({
+    words,
+    startingTeam,
+    gameName,
+    gameNumber
+  });
   const redStarts = startingTeam === "red";
   const blueStarts = startingTeam === "blue";
   const startingTotals = {
@@ -21,6 +38,10 @@ const createGame = () => {
     gameStillPlaying: true,
     turnTeam: startingTeam,
     totals: startingTotals,
+    gameInfo: { 
+      name: gameName,
+      number: gameNumber,
+    },
     clues: {
       showModal: false,
       guesses: 0,
@@ -50,15 +71,30 @@ const reducer = (state, action) => {
       return { ...state, cards: action.nextCards };
     case types.GAME_OVER:
       return { ...state, gameStillPlaying: false };
-    case types.START_NEW_GAME: 
-      const newGameState = createGame()
-      return { ...newGameState }
+    case types.CLOSED_MODAL:
+      return {
+        ...state,
+        clues: {
+          ...state.clues,
+          showModal: false
+        }
+      };
+    case types.START_NEW_GAME:
+      const { gameInfo } = state
+      const newGameState = createGame({
+        gameName: gameInfo.name,
+        gameNumber: gameInfo.number + 1
+      });
+      return { ...newGameState };
     case types.FORM_VALUE_UPDATED:
-      const { name, value } = action
-      return { ...state, clues: { ...state.clues, [name]: value } }
+      const { name, value } = action;
+      return { ...state, clues: { ...state.clues, [name]: value } };
     case types.CLUE_SUBMITTED:
-      const listToAddClueTo = state.turnTeam === "red" ? "redTeamPreviousClues" : "blueTeamPreviousClues"
-      const { word, number } = state.clues
+      const listToAddClueTo =
+        state.turnTeam === "red"
+          ? "redTeamPreviousClues"
+          : "blueTeamPreviousClues";
+      const { word, number } = state.clues;
       return {
         ...state,
         clues: {
@@ -74,7 +110,7 @@ const reducer = (state, action) => {
         }
       };
     case types.REMOVE_FROM_TOTAL:
-      const { currentCard, totals } = action
+      const { currentCard, totals } = action;
       return {
         ...state,
         totals: {
@@ -82,14 +118,14 @@ const reducer = (state, action) => {
           [currentCard.team]: totals[currentCard.team] - 1
         }
       };
-    case types.PASS_ON_TURN: 
-      const turnTeam = state.turnTeam === "red" ? "blue" : "red"
+    case types.PASS_ON_TURN:
+      const turnTeam = state.turnTeam === "red" ? "blue" : "red";
       return {
         ...state,
         turnTeam,
         clues: {
           ...state.clues,
-          guesses: 0,
+          guesses: 0
         }
       };
     case types.ENTER_NEW_CLUE: {
@@ -139,7 +175,8 @@ const types = {
   FORM_VALUE_UPDATED: "FORM_VALUE_UPDATED",
   CLUE_SUBMITTED: "CLUE_SUBMITTED",
   PASS_ON_TURN: "PASS_ON_TURN",
-  ENTER_NEW_CLUE: "ENTER_NEW_CLUE"
+  ENTER_NEW_CLUE: "ENTER_NEW_CLUE",
+  CLOSED_MODAL: "CLOSED_MODAL"
 };
 
 export { CodenamesProvider, useGameState, types };
