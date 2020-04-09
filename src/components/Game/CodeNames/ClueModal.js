@@ -7,7 +7,7 @@ const ClueModal = props => {
   const [state, dispatch] = useGameState();
   const [showError, setShowError] = React.useState(false)
 
-  const validWord = state.clues.word > 0 && state.clues.word !== ""; ;
+  const validWord = state.clues.word.length > 0 && state.clues.word !== ""; ;
   const validNumber = state.clues.number > 0 && state.clues.number !== "" ;
   const validateState = validNumber && validWord
 
@@ -27,10 +27,18 @@ const ClueModal = props => {
   };
 
   const errorMessageWord = showError && !validWord && (
-    <p className="text-danger">Please fill in a valid word</p>
+    <p 
+      id="codenames-clueWordError"
+      className="text-danger">
+        Please fill in a word
+    </p>
   );
   const errorMessageNumber = showError && !validNumber && (
-    <p className="text-danger">Please fill in a valid number greater than 0</p>
+    <p 
+      id="codenames-clueNumberError"
+      className="text-danger">
+        Please fill in a number greater than 0
+    </p>
   );
 
   return (
@@ -47,6 +55,7 @@ const ClueModal = props => {
           <div className="form-group">
             {errorMessageWord}
             <input
+              id="codenames-clueWordInput"
               placeholder="Clue"
               className="form-control"
               name="word"
@@ -57,6 +66,7 @@ const ClueModal = props => {
           <div className="form-group">
             {errorMessageNumber}
             <input
+              id="codenames-clueNumberInput"
               placeholder="Number of Guesses"
               className="form-control"
               name="number"
@@ -65,7 +75,10 @@ const ClueModal = props => {
             />
           </div>
           <div className="form-group">
-            <button onClick={submitClue} className="btn btn-primary">
+            <button 
+              id="codenames-submitClueButton"
+              onClick={submitClue} 
+              className="btn btn-primary">
               Submit Clue
             </button>
           </div>

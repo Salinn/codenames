@@ -14,12 +14,14 @@ const SidePanel = (props) => {
       previousClues: "redTeamPreviousClues",
       showClues: redsTurn || gameIsOver,
       teamName: "Red's",
+      simpleName: "red",
       headerColor: "danger",
     },
     {
       previousClues: "blueTeamPreviousClues",
       showClues: bluesTurn || gameIsOver,
       teamName: "Blue's",
+      simpleName: "blue",
       headerColor: "primary",
     },
   ];
@@ -41,9 +43,9 @@ const SidePanel = (props) => {
   }, []);
 
   const cluesTable = teamsTableInfo.map(team => {
-    const { teamName, rows, headerColor, showClues } = team;
+    const { teamName, rows, headerColor, showClues, simpleName } = team;
     return showClues && (
-      <table key={`${teamName}`} className="table">
+      <table id={`codenames-${simpleName}Table`} key={`${teamName}`} className="table">
         <thead>
           <tr className={`table-${headerColor}`}>
             <th scope="col">{teamName} Clues</th>

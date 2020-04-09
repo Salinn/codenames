@@ -23,13 +23,13 @@ const Header = props => {
   };
 
   const enterNewClueButton = state.clues.guesses === 0 && gameStillPlaying && (
-    <button onClick={spyMasterEnterNewClue} className="btn btn-primary">
+    <button id="codenames-enterClueButton" onClick={spyMasterEnterNewClue} className="btn btn-primary">
       Enter New Clue
     </button>
   );
 
   const endTurnButton = state.clues.guesses !== 0 && gameStillPlaying && (
-    <button onClick={passOnTurn} className="btn btn-danger">
+    <button id="codenames-endTurnButton" onClick={passOnTurn} className="btn btn-danger">
       End Turn
     </button>
   );
@@ -38,12 +38,12 @@ const Header = props => {
   
   return (
     <div className="col-12">
-      <h2 className="text-center">
+      <h2 id="codenames-title" className="text-center">
         {prompt}
       </h2>
       <div className="d-flex flex-column flex-sm-row justify-content-sm-between">
         <div className="p-2">
-          <button onClick={newGame} className="btn btn-success">
+          <button id="codenames-newGameButton" onClick={newGame} className="btn btn-success">
             New Game
           </button>
         </div>
@@ -52,7 +52,7 @@ const Header = props => {
           {endTurnButton}
         </div>
         <div className="p-2">
-          <button onClick={toggleSpy} className="btn btn-info">
+          <button id="codenames-toggleSpymasterButton" onClick={toggleSpy} className="btn btn-info">
             {spyToggleLabel}
           </button>
         </div>
