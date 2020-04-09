@@ -1,5 +1,5 @@
 import React from "react"
-import Codenames from "./Codenames"
+import Codenames from "./CodeNames"
 import { CodenamesProvider } from "../../context/Codenames"
 
 const Game = props => {
