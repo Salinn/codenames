@@ -70,10 +70,10 @@ const SidePanel = (props) => {
         <div className="row no-gutters">
           <div className="col-12">
             <h5>Remaining Cards</h5>
-            <p className="text-primary">Blue: {totals.blue}</p>
-            <p className="text-danger">Red: {totals.red}</p>
-            <p className="text-dark">Assassin: {totals.assassin}</p>
-            <p className="text-muted">Neutral: {totals.none}</p>
+            <p id="codenames-blueTotalCardsLeft" className="text-primary">Blue: {totals.blue}</p>
+            <p id="codenames-redTotalCardsLeft" className="text-danger">Red: {totals.red}</p>
+            <p id="codenames-assassinTotalCardsLeft" className="text-dark">Assassin: {totals.assassin}</p>
+            <p id="codenames-neutralTotalCardsLeft" className="text-muted">Neutral: {totals.none}</p>
           </div>
           <div>
             <p>To make a guess just click the card!</p>

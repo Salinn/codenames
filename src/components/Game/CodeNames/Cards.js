@@ -44,6 +44,7 @@ const Cards = props => {
 
   const gameCards = cards.map((word, index) => {
     const { id, label, flipped } = word;
+    const labelId = label.split(" ").join("")
     const FLIPPED_AND_SPY_MASTER = flipped && spyToggled;
     const opacity = FLIPPED_AND_SPY_MASTER ? { opacity: 0.5 } : {};
     const className =
@@ -64,16 +65,24 @@ const Cards = props => {
     const textColor = determineTextColor(word, spyToggled);
 
     const cardLabel = FLIPPED_AND_SPY_MASTER ? (
-      <h4 className={`text-center ${textColor}`}>
+      <h4 
+        id={`codenames-card-${labelId}-flipped`} 
+        className={`text-center ${textColor}`}>
         <strike>{label}</strike>
       </h4>
     ) : (
-      <h4 className={`text-center ${textColor}`}>{label}</h4>
+      <h4 
+        id={`codenames-card-${labelId}-not-flipped`} 
+        className={`text-center ${textColor}`}>
+          {label}
+        </h4>
     );
 
     return (
       <div key={id} className={className} style={opacity}>
-        <Card onClick={onClick} className={`m-2 py-5 ${backgroundColor}`}>
+        <Card
+          onClick={onClick} 
+          className={`m-2 py-5 ${backgroundColor}`}>
           {cardLabel}
         </Card>
       </div>

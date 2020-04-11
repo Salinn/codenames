@@ -20,6 +20,8 @@
     "start": "react-scripts start",
     "cypress": "cypress open",
     "cypress:all": "cypress run",
+    "cy:run:chrome": "cypress run --browser chrome",
+    "cy:run:firefox": "cypress run --browser firefox",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -30,15 +32,18 @@
   },
   "eslintConfig": {
     "plugins": [
-      "jsx-a11y"
+      "jsx-a11y",
+      "cypress",
+      "chai-friendly"
     ],
     "rules": {
-      "jsx-a11y/rule-name": 2
+      "chai-friendly/no-unused-expressions": 2
     },
     "extends": [
       "react-app",
       "plugin:jsx-a11y/recommended",
-      "plugin:react/recommended"
+      "plugin:react/recommended",
+      "plugin:cypress/recommended"
     ]
   },
   "browserslist": {
@@ -59,6 +64,7 @@
     "@typescript-eslint/parser": "^2.27.0",
     "eslint": "^6.8.0",
     "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-flowtype": "^4.7.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",

@@ -43,11 +43,12 @@ const ClueModal = props => {
 
   return (
     <Modal
+      id="codenames-clueModal"
       show={state.clues.showModal}
       onHide={() => dispatch({ type: types.CLOSED_MODAL })}
     >
       <Modal.Header closeButton>
-        {capitalize(state.turnTeam)} Team Spy Master Enter Your Guess
+        <h3 id="codenames-enterClueTitle">{capitalize(state.turnTeam)} Team Spy Master Enter Your Guess</h3>
       </Modal.Header>
       <Modal.Body>
         <form autoComplete="off">
