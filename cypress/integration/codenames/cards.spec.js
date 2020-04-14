@@ -22,7 +22,26 @@ context('Cards', () => {
     })
   })
 
-  it('When a clue is flipped over ', () => {
-    cy.get('#codenames-card-Death-not-flipped').click()
+  it('Can flip over 3 cards', () => {
+    const cardsToClick = generatedWords.slice(0, 3);
+    cy.clickCards({ cards: cardsToClick });
+    cardsToClick.forEach(card => {
+      const { label } = card
+      const labelId = label.split(" ").join("");
+      cy.get(`#codenames-card-${labelId}-flipped`).should("not.be.visible");
+      cy.get(`#codenames-card-${labelId}-not-flipped`).should("be.visible");
+    })
+  })
+
+  it('blue team can win in three turns', () => {
+    const firstSetOfGuesses = ["blue", "blue", "blue"];
+    const secondSetOfGuesses = ["blue", "blue", "blue", "blue"];
+    const lastSetOfGuesses = ["blue", "blue"];
+    cy.clickTeamCards({ teams: firstSetOfGuesses });
+    cy.endTurn()
+    cy.clickTeamCards({ teams: secondSetOfGuesses });
+    cy.endTurn();
+    cy.clickTeamCards({ teams: lastSetOfGuesses });
+    cy.get("codenames-title").should("have.text", "WAY TO GO BLUE TEAM!");
   })
 })

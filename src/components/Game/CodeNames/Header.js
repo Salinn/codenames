@@ -37,7 +37,7 @@ const Header = props => {
   const prompt = gameStillPlaying ? turnMessaging : winningMessage;
   
   return (
-    <div className="col-12">
+    <div id="codenames-buttons" className="col-12">
       <h2 id="codenames-title" className="text-center">
         {prompt}
       </h2>
