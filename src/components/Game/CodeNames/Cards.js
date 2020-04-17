@@ -67,14 +67,14 @@ const Cards = props => {
     const cardLabel = FLIPPED_AND_SPY_MASTER ? (
       <h4
         id={`codenames-card-${labelId}-flipped`}
-        className={`text-center ${textColor}`}
+        className={`text-center text-break text-wrap ${textColor}`}
       >
         <strike>{label}</strike>
       </h4>
     ) : (
       <h4
         id={`codenames-card-${labelId}-not-flipped`}
-        className={`text-center ${textColor}`}
+        className={`text-center text-break text-wrap ${textColor}`}
       >
         {label}
       </h4>

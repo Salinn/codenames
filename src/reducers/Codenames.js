@@ -6,17 +6,20 @@ import { types } from "../context/Codenames"
 export const createGame = (props) => {
   let gameName = "";
   let gameNumber = "";
+  let gameVersion = "";
 
   if (props) {
     gameName = props.gameName;
     gameNumber = props.gameNumber;
+    gameVersion = props.gameVersion
   } else {
     const params = new URLSearchParams(window.location.search);
     gameName = params.get("name");
+    gameVersion = params.get("version") || 'normal';
     gameNumber = parseInt(params.get("number"), 10);
   }
 
-  const words = pickWords({ gameName, gameNumber });
+  const words = pickWords({ gameName, gameNumber, gameVersion });
   const startingTeam = pickStartingTeam({ gameName, gameNumber });
   const startingCards = wordsToCards({
     words,
@@ -42,6 +45,7 @@ export const createGame = (props) => {
     gameInfo: {
       name: gameName,
       number: gameNumber,
+      version: gameVersion
     },
     turnMessaging: `${capitalize(startingTeam)}'s Spy Master Enter New Clue`,
     winningMessage: "",
@@ -93,6 +97,7 @@ export default (state, action) => {
       return createGame({
         gameName: state.gameInfo.name,
         gameNumber: state.gameInfo.number + 1,
+        gameVersion: state.gameInfo.version
       });
     case types.FORM_VALUE_UPDATED:
       return {

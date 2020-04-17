@@ -16,9 +16,9 @@ const Header = props => {
 
   const newGame = () => {
     const {
-      gameInfo: { name, number },
+      gameInfo: { name, number, version },
     } = state;
-    history.push(`/games/codenames?name=${name}&number=${number + 1}`);
+    history.push(`/games/codenames?name=${name}&version=${version}&number=${number + 1}`);
     window.location.reload();
   };
 

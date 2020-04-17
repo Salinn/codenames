@@ -12,7 +12,7 @@ const Home = props => {
   }
 
   const createGame = () => {
-    history.push(`/games/codenames?name=${gameName}&number=1`);
+    history.push(`/games/codenames?name=${gameName}&version=normal&number=1`);
     window.location.reload();
   }
 

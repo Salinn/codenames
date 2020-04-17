@@ -22,26 +22,17 @@ context('Cards', () => {
     })
   })
 
-  it('Can flip over 3 cards', () => {
-    const cardsToClick = generatedWords.slice(0, 3);
-    cy.clickCards({ cards: cardsToClick });
-    cardsToClick.forEach(card => {
-      const { label } = card
-      const labelId = label.split(" ").join("");
-      cy.get(`#codenames-card-${labelId}-flipped`).should("not.be.visible");
-      cy.get(`#codenames-card-${labelId}-not-flipped`).should("be.visible");
-    })
-  })
-
   it('blue team can win in three turns', () => {
     const firstSetOfGuesses = ["blue", "blue", "blue"];
-    const secondSetOfGuesses = ["blue", "blue", "blue", "blue"];
-    const lastSetOfGuesses = ["blue", "blue"];
+    const secondSetOfGuesses = ["blue", "blue", "blue"];
+    const thirdSetOfGuesses = ["blue", "blue", "blue"];
     cy.clickTeamCards({ teams: firstSetOfGuesses });
     cy.endTurn()
+    cy.skipNextTurn();
     cy.clickTeamCards({ teams: secondSetOfGuesses });
-    cy.endTurn();
-    cy.clickTeamCards({ teams: lastSetOfGuesses });
-    cy.get("codenames-title").should("have.text", "WAY TO GO BLUE TEAM!");
+    cy.endTurn()
+    cy.skipNextTurn();
+    cy.clickTeamCards({ teams: thirdSetOfGuesses });
+    cy.get("#codenames-title").should("have.text", "WAY TO GO BLUE TEAM!")
   })
 })

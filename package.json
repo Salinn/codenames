@@ -8,7 +8,6 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.4.1",
-    "cypress": "^4.3.0",
     "faker": "^4.1.0",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.17",
@@ -19,6 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "cypress": "cypress open",
+    "threaded": "cypress run --parallel ",
     "cypress:all": "cypress run",
     "cy:run:chrome": "cypress run --browser chrome",
     "cy:run:firefox": "cypress run --browser firefox",
@@ -62,6 +62,7 @@
     "@cypress/instrument-cra": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
+    "cypress": "^4.4.0",
     "eslint": "^6.8.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-cypress": "^2.10.3",

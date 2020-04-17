@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useGameState, types } from "../../../context/Codenames";
 import { capitalize } from "../../../utils/CodenameUtils"
 
-const ClueModal = props => {
+const ClueModal = () => {
   const [state, dispatch] = useGameState();
   const [showError, setShowError] = React.useState(false)
 
@@ -20,10 +20,11 @@ const ClueModal = props => {
   const submitClue = (event) => {
     event.preventDefault();
     if(validateState) {
-      dispatch({ type: types.CLUE_SUBMITTED, dispatch });
       setShowError(false);
+      dispatch({ type: types.CLUE_SUBMITTED, dispatch });
+    } else {
+      setShowError(true)
     }
-    setShowError(true)
   };
 
   const errorMessageWord = showError && !validWord && (
