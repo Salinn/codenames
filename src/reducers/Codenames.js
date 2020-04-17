@@ -173,13 +173,21 @@ export default (state, action) => {
       };
     case types.PASS_ON_TURN:
       const turnTeam = state.turnTeam === "red" ? "blue" : "red";
-      return {
+      const nextStateCluePassed = {
         ...state,
         turnTeam,
         clues: {
           ...state.clues,
           guesses: 0,
         },
+      };
+
+      return {
+        ...nextStateCluePassed,
+        ...determineNextTurnInfo({
+          ...nextStateCluePassed,
+          dispatch: action.dispatch,
+        }),
       };
     case types.ENTER_NEW_CLUE: {
       return {
