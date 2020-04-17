@@ -19,7 +19,7 @@ const Header = props => {
       gameInfo: { name, number, version },
     } = state;
     history.push(`/games/codenames?name=${name}&version=${version}&number=${number + 1}`);
-    window.location.reload();
+    dispatch({ type: types.START_NEW_GAME })
   };
 
   const enterNewClueButton = state.clues.guesses === 0 && gameStillPlaying && (
@@ -43,8 +43,21 @@ const Header = props => {
       </h2>
       <div className="d-flex flex-column flex-sm-row justify-content-sm-between">
         <div className="p-2">
-          <button id="codenames-newGameButton" onClick={newGame} className="btn btn-success">
+          <button
+            id="codenames-newGameButton"
+            onClick={newGame}
+            className="btn btn-success"
+          >
             New Game
+          </button>
+          <button
+            id="codenames-shareLink"
+            className="btn btn-secondary mx-2"
+            onClick={() => {
+              navigator.clipboard.writeText(window.location);
+            }}
+          >
+            Share Game
           </button>
         </div>
         <div className="p-2">
@@ -52,7 +65,11 @@ const Header = props => {
           {endTurnButton}
         </div>
         <div className="p-2">
-          <button id="codenames-toggleSpymasterButton" onClick={toggleSpy} className="btn btn-info">
+          <button
+            id="codenames-toggleSpymasterButton"
+            onClick={toggleSpy}
+            className="btn btn-info"
+          >
             {spyToggleLabel}
           </button>
         </div>

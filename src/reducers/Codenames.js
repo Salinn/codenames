@@ -1,5 +1,5 @@
 import { wordsToCards, pickStartingTeam } from "../utils/Game";
-import { pickWords } from "../assets/words";
+import { pickWords, pickVersion } from "../assets/words";
 import { determineNextTurnInfo, capitalize } from "../utils/CodenameUtils";
 import { types } from "../context/Codenames"
 
@@ -7,22 +7,36 @@ export const createGame = (props) => {
   let gameName = "";
   let gameNumber = "";
   let gameVersion = "";
+  let unusedWords = [];
+  let words = []
+  let simulateGames = false
+  let gamesToSimulate = 0
 
   if (props) {
     gameName = props.gameName;
     gameNumber = props.gameNumber;
     gameVersion = props.gameVersion
+    words = props.unusedWords
+    gamesToSimulate = props.gamesToSimulate - 1
+    simulateGames = gameNumber > 1;
   } else {
     const params = new URLSearchParams(window.location.search);
     gameName = params.get("name");
     gameVersion = params.get("version") || 'normal';
     gameNumber = parseInt(params.get("number"), 10);
+    words = pickVersion(gameVersion);
+    simulateGames = gameNumber > 1
+    gamesToSimulate = gameNumber - 1
+    gameNumber = 1
   }
+  
 
-  const words = pickWords({ gameName, gameNumber, gameVersion });
+  const shuffledWords = pickWords({ gameName, gameNumber, words });
+  const gameWords = shuffledWords.slice(0, 25);
+  unusedWords = shuffledWords.slice(25, shuffledWords.length);
   const startingTeam = pickStartingTeam({ gameName, gameNumber });
   const startingCards = wordsToCards({
-    words,
+    words: gameWords,
     startingTeam,
     gameName,
     gameNumber,
@@ -36,8 +50,11 @@ export const createGame = (props) => {
     none: 7,
   };
 
+
   const initialState = {
     cards: startingCards,
+    unusedWords, 
+    gamesToSimulate,
     spyToggled: false,
     gameStillPlaying: true,
     turnTeam: startingTeam,
@@ -58,7 +75,18 @@ export const createGame = (props) => {
       blueTeamPreviousClues: [],
     },
   };
-  return initialState;
+
+  if (gamesToSimulate > 0 && simulateGames) {
+    return createGame({
+      gameName: initialState.gameInfo.name,
+      gameNumber: initialState.gameInfo.number + 1,
+      gameVersion: initialState.gameInfo.version,
+      unusedWords: initialState.unusedWords,
+      gamesToSimulate,
+    });
+  } else {
+    return initialState;
+  }
 };
 
 export default (state, action) => {
@@ -97,7 +125,9 @@ export default (state, action) => {
       return createGame({
         gameName: state.gameInfo.name,
         gameNumber: state.gameInfo.number + 1,
-        gameVersion: state.gameInfo.version
+        gameVersion: state.gameInfo.version,
+        unusedWords: state.unusedWords,
+        gamesToSimulate: state.gamesToSimulate,
       });
     case types.FORM_VALUE_UPDATED:
       return {
