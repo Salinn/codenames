@@ -245,19 +245,25 @@ const phiTauWords = [
   // 'Handicrapper', 'Toaster', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
 ];
 
+const scrumMasterGuildWords = [
+  "Acceptance Criteria", "Backlog", "Blocker", "Daily Standup", "Definition of Done", "Epic", "Fibonacci Sequence", "Sprint", "Stakeholder", "Story Points", "Dependency", "Metrics", "Planning", "Scrum Master", "Product Owner", "User Story", "Scrum", "KanBan", "Retrospective", "Grooming", "Deployment", "Capacity", "Velocity", "Ceremony", "Delivery", "Developer"
+]
+
 export const pickVersion = version => {
-  switch(version) {
-    case 'normal':
-      return normalWords
-    case 'nsfw':
-      return nsfwWords
-    case 'phitau':
-      return phiTauWords
+  switch (version) {
+    case "normal":
+      return normalWords;
+    case "nsfw":
+      return nsfwWords;
+    case "phitau":
+      return phiTauWords;
+    case "scrumMasterGuild":
+      return scrumMasterGuildWords;
     default:
-      return normalWords
+      return normalWords;
   }
 }
 
-export const pickWords = ({gameName, gameNumber, words }) => {
+export const pickWords = ({ gameName, gameNumber, words }) => {
   return shuffle(words, nameToSeed({ name: gameName, number: gameNumber }));
 }

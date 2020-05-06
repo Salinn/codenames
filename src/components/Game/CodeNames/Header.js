@@ -55,6 +55,8 @@ const Header = props => {
             className="btn btn-secondary mx-2"
             onClick={() => {
               navigator.clipboard.writeText(window.location);
+              // window.open("about:blank", "_self");
+              // window.close();
             }}
           >
             Share Game

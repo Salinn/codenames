@@ -11,6 +11,7 @@ export const createGame = (props) => {
   let words = []
   let simulateGames = false
   let gamesToSimulate = 0
+  let usedWords = [];
 
   if (props) {
     gameName = props.gameName;
@@ -19,6 +20,7 @@ export const createGame = (props) => {
     words = props.unusedWords
     gamesToSimulate = props.gamesToSimulate - 1
     simulateGames = gameNumber > 1;
+    usedWords = props.usedWords;
   } else {
     const params = new URLSearchParams(window.location.search);
     gameName = params.get("name");
@@ -29,7 +31,9 @@ export const createGame = (props) => {
     gamesToSimulate = gameNumber - 1
     gameNumber = 1
   }
-  
+  if (words.length < 25) {
+    words = words.concat(usedWords);
+  }
 
   const shuffledWords = pickWords({ gameName, gameNumber, words });
   const gameWords = shuffledWords.slice(0, 25);
@@ -54,6 +58,7 @@ export const createGame = (props) => {
   const initialState = {
     cards: startingCards,
     unusedWords, 
+    usedWords: usedWords.concat(shuffledWords),
     gamesToSimulate,
     spyToggled: false,
     gameStillPlaying: true,
@@ -82,6 +87,7 @@ export const createGame = (props) => {
       gameNumber: initialState.gameInfo.number + 1,
       gameVersion: initialState.gameInfo.version,
       unusedWords: initialState.unusedWords,
+      usedWords: initialState.usedWords,
       gamesToSimulate,
     });
   } else {
@@ -127,6 +133,7 @@ export default (state, action) => {
         gameNumber: state.gameInfo.number + 1,
         gameVersion: state.gameInfo.version,
         unusedWords: state.unusedWords,
+        usedWords: state.usedWords,
         gamesToSimulate: state.gamesToSimulate,
       });
     case types.FORM_VALUE_UPDATED:
